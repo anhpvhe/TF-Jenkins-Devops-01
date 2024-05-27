@@ -23,13 +23,9 @@ pipeline {
         stage('Plan') {
             steps {
                 withCredentials([
-                    string(credentialsId: 'aws-access-key-id', variable: 'access_key'),
-                    string(credentialsId: 'aws-secret-access-key', variable: 'secret_access_key')
+                    string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
-                    script {
-                        env.AWS_ACCESS_KEY_ID = access_key
-                        env.AWS_SECRET_ACCESS_KEY = secret_access_key
-                    }
                     bat 'cd terraform && terraform init'
                     bat 'cd terraform && terraform plan -out tfplan'
                     bat 'cd terraform && terraform show -no-color tfplan > tfplan.txt'
@@ -55,13 +51,9 @@ pipeline {
         stage('Apply') {
             steps {
                 withCredentials([
-                    string(credentialsId: 'aws-access-key-id', variable: 'access_key'),
-                    string(credentialsId: 'aws-secret-access-key', variable: 'secret_access_key')
+                    string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
-                    script {
-                        env.AWS_ACCESS_KEY_ID = access_key
-                        env.AWS_SECRET_ACCESS_KEY = secret_access_key
-                    }
                     bat 'cd terraform && terraform apply -input=false tfplan'
                 }
             }
