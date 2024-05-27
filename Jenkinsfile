@@ -5,10 +5,9 @@ pipeline {
     } 
     environment {
         withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'access_key'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'secret_access_key')]) {
-            AWS_ACCESS_KEY_ID     = %access_key%
-            AWS_SECRET_ACCESS_KEY = %secret_access_key%
-        }
-       
+            AWS_ACCESS_KEY_ID     = "%access_key%"
+            AWS_SECRET_ACCESS_KEY = "%secret_access_key%"
+        }   
     }
 
     agent any
