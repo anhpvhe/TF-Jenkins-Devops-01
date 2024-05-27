@@ -3,12 +3,6 @@ pipeline {
     parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     } 
-    environment {
-        withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'access_key'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'secret_access_key')]) {
-            AWS_ACCESS_KEY_ID     = '$access_key'
-            AWS_SECRET_ACCESS_KEY = '$secret_access_key'
-        }   
-    }
 
     agent any
     stages {
@@ -24,9 +18,15 @@ pipeline {
 
         stage('Plan') {
             steps {
-                bat 'cd terraform && terraform init'
-                bat 'cd terraform && terraform plan -out tfplan'
-                bat 'cd terraform && terraform show -no-color tfplan > tfplan.txt'
+                withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'access_key'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'secret_access_key')]) {
+                    script {
+                        env.AWS_ACCESS_KEY_ID = access_key
+                        env.AWS_SECRET_ACCESS_KEY = secret_access_key
+                    }
+                    bat 'cd terraform && terraform init'
+                    bat 'cd terraform && terraform plan -out tfplan'
+                    bat 'cd terraform && terraform show -no-color tfplan > tfplan.txt'
+                }
             }
         }
 
@@ -47,7 +47,13 @@ pipeline {
 
         stage('Apply') {
             steps {
-                bat 'cd terraform && terraform apply -input=false tfplan'
+                withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'access_key'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'secret_access_key')]) {
+                    script {
+                        env.AWS_ACCESS_KEY_ID = access_key
+                        env.AWS_SECRET_ACCESS_KEY = secret_access_key
+                    }
+                    bat 'cd terraform && terraform apply -input=false tfplan'
+                }
             }
         }
     }
