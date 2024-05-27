@@ -7,6 +7,8 @@ pipeline {
         GIT_URL = 'https://github.com/anhpvhe/TF-Jenkins-Devops-01.git'
         GIT_BRANCH = 'main'
         TERRAFORM_PATH = 'C:\\Terraform\\terraform.exe'
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     } 
 
     agent any
@@ -64,6 +66,11 @@ pipeline {
                 ]) {
                     bat "cd terraform && ${env.TERRAFORM_PATH} apply -input=false tfplan"
                 }
+            }
+        }
+        stage('Stop') {
+            steps {
+                input message: 'Do you want to destroy the infrastructure?', ok: 'Destroy'
             }
         }
     }
