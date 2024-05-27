@@ -22,7 +22,10 @@ pipeline {
 
         stage('Plan') {
             steps {
-                withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'access_key'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'secret_access_key')]) {
+                withCredentials([
+                    string(credentialsId: 'aws-access-key-id', variable: 'access_key'),
+                    string(credentialsId: 'aws-secret-access-key', variable: 'secret_access_key')
+                ]) {
                     script {
                         env.AWS_ACCESS_KEY_ID = access_key
                         env.AWS_SECRET_ACCESS_KEY = secret_access_key
@@ -51,7 +54,10 @@ pipeline {
 
         stage('Apply') {
             steps {
-                withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'access_key'), string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'secret_access_key')]) {
+                withCredentials([
+                    string(credentialsId: 'aws-access-key-id', variable: 'access_key'),
+                    string(credentialsId: 'aws-secret-access-key', variable: 'secret_access_key')
+                ]) {
                     script {
                         env.AWS_ACCESS_KEY_ID = access_key
                         env.AWS_SECRET_ACCESS_KEY = secret_access_key
