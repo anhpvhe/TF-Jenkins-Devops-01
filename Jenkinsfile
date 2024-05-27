@@ -34,9 +34,9 @@ pipeline {
                     // bat 'cd Terraform && C:\\path\\to\\terraform.exe plan -out tfplan'
                     // bat 'cd Terraform && C:\\path\\to\\terraform.exe show -no-color tfplan > tfplan.txt'
                     // bat "${env.TERRAFORM_PATH} -version"
-                    bat 'cd terraform && ${env.TERRAFORM_PATH} init'
-                    bat 'cd terraform && ${env.TERRAFORM_PATH} plan -out tfplan'
-                    bat 'cd terraform && ${env.TERRAFORM_PATH} show -no-color tfplan > tfplan.txt'
+                    bat "cd terraform && ${env.TERRAFORM_PATH} init"
+                    bat "cd terraform && ${env.TERRAFORM_PATH} plan -out tfplan"
+                    bat "cd terraform && ${env.TERRAFORM_PATH} show -no-color tfplan > tfplan.txt"
                 }
             }
         }
@@ -62,7 +62,7 @@ pipeline {
                     string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
                     string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
-                    bat 'cd terraform && ${env.TERRAFORM_PATH} apply -input=false tfplan'
+                    bat "cd terraform && ${env.TERRAFORM_PATH} apply -input=false tfplan"
                 }
             }
         }
@@ -71,7 +71,7 @@ pipeline {
     post {
         always {
             script {
-                bat 'cd terraform && ${env.TERRAFORM_PATH} destroy -auto-approve'
+                bat "cd terraform && ${env.TERRAFORM_PATH} destroy -auto-approve"
             }
         }
     }
