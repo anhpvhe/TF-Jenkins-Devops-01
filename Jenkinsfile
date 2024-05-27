@@ -2,6 +2,10 @@ pipeline {
 
     parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+    }
+    environment {
+        GIT_URL = 'https://github.com/anhpvhe/TF-Jenkins-Devops-01.git'
+        GIT_BRANCH = 'main'
     } 
 
     agent any
@@ -10,7 +14,7 @@ pipeline {
             steps {
                 script {
                     dir('terraform') {
-                        git 'https://github.com/anhpvhe/TF-Jenkins-Devops-01.git'
+                        git branch: GIT_BRANCH, url: GIT_URL, credentialsId: 'git-credentials-id'
                     }
                 }
             }
