@@ -6,6 +6,7 @@ pipeline {
     environment {
         GIT_URL = 'https://github.com/anhpvhe/TF-Jenkins-Devops-01.git'
         GIT_BRANCH = 'main'
+        TERRAFORM_PATH = 'C:\\Terraform\\terraform.exe'
     } 
 
     agent any
