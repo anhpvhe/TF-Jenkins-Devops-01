@@ -33,38 +33,38 @@ pipeline {
                     // bat 'cd Terraform && C:\\path\\to\\terraform.exe init'
                     // bat 'cd Terraform && C:\\path\\to\\terraform.exe plan -out tfplan'
                     // bat 'cd Terraform && C:\\path\\to\\terraform.exe show -no-color tfplan > tfplan.txt'
-                    bat "${env.TERRAFORM_PATH} -version"
-                    // bat 'cd Terraform && terraform init'
-                    // bat 'cd Terraform && terraform plan -out tfplan'
-                    // bat 'cd Terraform && terraform show -no-color tfplan > tfplan.txt'
+                    // bat "${env.TERRAFORM_PATH} -version"
+                    bat 'cd terraform && ${env.TERRAFORM_PATH} init'
+                    bat 'cd terraform && ${env.TERRAFORM_PATH} plan -out tfplan'
+                    bat 'cd terraform && ${env.TERRAFORM_PATH} show -no-color tfplan > tfplan.txt'
                 }
             }
         }
 
-        // stage('Approval') {
-        //     when {
-        //         not {
-        //             equals expected: true, actual: params.autoApprove
-        //         }
-        //     }
-        //     steps {
-        //         script {
-        //             def plan = readFile 'terraform/tfplan.txt'
-        //             input message: "Do you want to apply the plan?",
-        //             parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-        //         }
-        //     }
-        // }
+        stage('Approval') {
+            when {
+                not {
+                    equals expected: true, actual: params.autoApprove
+                }
+            }
+            steps {
+                script {
+                    def plan = readFile 'terraform/tfplan.txt'
+                    input message: "Do you want to apply the plan?",
+                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+                }
+            }
+        }
 
-        // stage('Apply') {
-        //     steps {
-        //         withCredentials([
-        //             string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
-        //             string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
-        //         ]) {
-        //             bat 'cd terraform && terraform apply -input=false tfplan'
-        //         }
-        //     }
-        // }
+        stage('Apply') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    bat 'cd terraform && ${env.TERRAFORM_PATH} apply -input=false tfplan'
+                }
+            }
+        }
     }
 }
