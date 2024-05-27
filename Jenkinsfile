@@ -29,6 +29,9 @@ pipeline {
                     // bat 'cd Terraform && terraform init'
                     // bat 'cd Terraform && terraform plan -out tfplan'
                     // bat 'cd Terraform && terraform show -no-color tfplan > tfplan.txt'
+                    bat 'cd Terraform && C:\\Terraform\\terraform.exe init'
+                    bat 'cd Terraform && C:\\Terraform\\terraform.exe plan -out tfplan'
+                    bat 'cd Terraform && C:\\Terraform\\terraform.exe show -no-color tfplan > tfplan.txt'
                     bat 'terraform -version'
                 }
             }
