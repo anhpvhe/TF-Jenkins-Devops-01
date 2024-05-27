@@ -26,6 +26,7 @@ pipeline {
                     string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY_ID'),
                     string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
+                    bat 'echo %AWS_ACCESS_KEY_ID%'
                     bat 'cd terraform && terraform init'
                     bat 'cd terraform && terraform plan -out tfplan'
                     bat 'cd terraform && terraform show -no-color tfplan > tfplan.txt'
