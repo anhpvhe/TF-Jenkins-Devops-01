@@ -33,7 +33,7 @@ pipeline {
                     // bat 'cd Terraform && C:\\path\\to\\terraform.exe init'
                     // bat 'cd Terraform && C:\\path\\to\\terraform.exe plan -out tfplan'
                     // bat 'cd Terraform && C:\\path\\to\\terraform.exe show -no-color tfplan > tfplan.txt'
-                    bat 'cd Terraform && %env.TERRAFORM_PATH% -version'
+                    bat "cd Terraform && ${env.TERRAFORM_PATH} -version"
                 }
             }
         }
