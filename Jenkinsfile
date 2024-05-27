@@ -67,4 +67,12 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            script {
+                bat 'cd terraform && ${env.TERRAFORM_PATH} destroy -auto-approve'
+            }
+        }
+    }
 }
